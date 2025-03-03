@@ -1,0 +1,9 @@
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === "logSearch") {
+      chrome.storage.local.get({ searches: [] }, (data) => {
+        let searches = data.searches;
+        searches.push({ query: message.query, time: new Date().toLocaleString() });
+        chrome.storage.local.set({ searches });
+      });
+    }
+  });
