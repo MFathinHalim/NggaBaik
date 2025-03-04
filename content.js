@@ -25,11 +25,12 @@ const checkUrl = async () => {
     if (!queryResponse) return; // Jika tidak ada respons, hentikan proses
 
     if (queryResponse.startsWith("[n]")) {
-      alert("Future: " + queryResponse.replace("[n] ", ""));
+      alert(queryResponse.replace("[n] ", "").replace("\n", ""));
       let userInput = prompt("Ketik 'lanjut' jika tetap ingin membuka:");
 
       if (userInput && userInput.toLowerCase() === "lanjut") {
         window.location.href = "https://www.youtube.com/watch?v=rQ9YQJ3JpWw";
+        chrome.runtime.sendMessage({ type: "logSearch", query, url: currentUrl });
       } else {
         window.location.href = "https://www.google.com";
       }
