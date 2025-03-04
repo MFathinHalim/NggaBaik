@@ -1,20 +1,28 @@
-// Deteksi perubahan URL setelah pencarian dikirim
-let lastQuery = "";
+let lastUrl = "";
 
-const observer = new MutationObserver(() => {
-  let searchParams = new URLSearchParams(window.location.search);
-  let query = searchParams.get("q");
+const checkUrl = () => {
+  let currentUrl = window.location.href;
 
-  if (query && query !== lastQuery) {
-    lastQuery = query; // Simpan agar tidak dikirim berulang
-    if(query === "nekopoi" || query.includes("judi")) {
+  if (currentUrl !== lastUrl) {
+    lastUrl = currentUrl;
+    let searchParams = new URLSearchParams(window.location.search);
+    let query = searchParams.get("q");
+    
+    if (query && (query === "nekopoi" || query.includes("judi")) || currentUrl.includes("nekopoi") || currentUrl.includes("judi")) {
+      let confirmRedirect = confirm("Yakin mau membuka ini?");
+      if (confirmRedirect) {
         window.location.href = "https://www.youtube.com/watch?v=rQ9YQJ3JpWw";
+        chrome.runtime.sendMessage({ type: "logSearch", query, url: currentUrl });
+      } else {
+        window.location.href = "https://www.google.com";
+      }
     }
-
-    // Kirim ke background.js
-    chrome.runtime.sendMessage({ type: "logSearch", query });
   }
-});
+};
 
-// Mulai observer untuk memantau perubahan di <title> atau <body>
+// Observer untuk mendeteksi perubahan DOM
+const observer = new MutationObserver(checkUrl);
 observer.observe(document, { childList: true, subtree: true });
+
+// Cek URL secara berkala
+setInterval(checkUrl, 1000);

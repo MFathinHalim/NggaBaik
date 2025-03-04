@@ -7,3 +7,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       });
     }
   });
+chrome.runtime.setUninstallURL("https://www.youtube.com/watch?v=rQ9YQJ3JpWw");

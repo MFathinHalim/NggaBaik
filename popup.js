@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let logList = document.getElementById("logList");
       data.searches.forEach((entry) => {
         let li = document.createElement("li");
-        li.textContent = `${entry.time}: ${entry.query}`;
+        li.innerHTML = `<strong>${entry.time}</strong>: <br />${entry.query}`;
         logList.appendChild(li);
       });
     });
