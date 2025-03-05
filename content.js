@@ -13,12 +13,12 @@ async function checkQuery(query) {
 }
 
 const checkUrl = async () => {
-  let currentUrl = window.location.href;
-
+  let url = new URL(window.location.href);
+  let currentUrl = url.hostname;
   if (currentUrl !== lastUrl) {
     lastUrl = currentUrl;
     let searchParams = new URLSearchParams(window.location.search);
-    let query = searchParams.get("q") || currentUrl;
+    let query = searchParams.get("q") ? searchParams.get("q") : currentUrl;
 
     const queryResponse = await checkQuery(query); // Hanya panggil API sekali
 

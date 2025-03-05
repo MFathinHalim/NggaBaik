@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Project 32",
-  "version": "0.4",
+  "version": "0.5",
   "description": "Monitor search bar inputs.",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["*://*/*"],
