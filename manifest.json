@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Project 32",
-  "version": "0.5",
+  "version": "0.6",
   "description": "Monitor search bar inputs.",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["*://*/*"],
@@ -11,7 +11,8 @@
   "content_scripts": [
     {
     "matches": ["*://*/*"],
-      "js": ["content.js"]
+      "js": ["content.js", "sweetalert2.min.js"],
+      "css": ["sweetalert2.min.css"]
     }
   ],
   "action": {
