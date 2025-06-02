@@ -21,6 +21,19 @@ async function checkQuery(query) {
   });
 }
 
+function injectVoiceScript() {
+  const script = document.createElement("script");
+  script.src = chrome.runtime.getURL("page-voice.js");
+  script.onload = () => script.remove();
+  (document.head || document.documentElement).appendChild(script);
+}
+
+function speakFromPage(text) {
+  window.postMessage({ type: "SPEAK_TEXT", text }, "*");
+}
+
+injectVoiceScript();
+
 const checkUrl = async () => {
   let url = new URL(window.location.href);
   let currentUrl = url.hostname;
@@ -44,6 +57,11 @@ const checkUrl = async () => {
         showCancelButton: true,
         confirmButtonText: "Lanjut",
         cancelButtonText: "Kembali ke Google",
+        didOpen: () => {
+          document.addEventListener("mousemove", () => {
+            speakFromPage(message);
+          });
+        },
       }).then((result) => {
         if (result.isConfirmed) {
           window.location.href = "https://www.youtube.com/watch?v=rQ9YQJ3JpWw";
@@ -81,15 +99,13 @@ const checkUrl = async () => {
 checkUrl();
 
 function monitorInputField(field) {
-  if (field.dataset.watched === "true") return; // ⚠️ sudah dipantau
-
-  field.dataset.watched = "true"; // tandai sudah dipantau
+  if (field.dataset.watched === "true") return;
+  field.dataset.watched = "true";
 
   const checkInput = debounce(() => {
     if (warninginput) return;
 
     let text = "";
-
     if (field.isContentEditable) {
       text = field.innerText?.trim();
     } else {
@@ -116,6 +132,9 @@ function monitorInputField(field) {
           showCancelButton: true,
           confirmButtonText: "Lanjut",
           cancelButtonText: "Kembali ke Google",
+          didOpen: () => {
+            speakWithVoice("Peringatan! Jangan ketik hal yang tidak pantas.");
+          },
         }).then((result) => {
           if (result.isConfirmed) {
             chrome.runtime.sendMessage({
@@ -146,10 +165,9 @@ function scanInputs() {
   fields.forEach(monitorInputField);
 }
 
-// Jalankan awal
 scanInputs();
 
-// Monitor DOM baru
+// Monitor elemen input baru
 const observerInputs = new MutationObserver(scanInputs);
 observerInputs.observe(document.body, { childList: true, subtree: true });
 
