@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Atur Email Orang Tua</title>
+    <style>
+      :root {
+        --bg: #f9fafb;
+        --primary: #10b981;
+        --text: #111827;
+        --border: #d1d5db;
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 1rem;
+        margin: 0;
+      }
+
+      .card {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--radius);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h2 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        text-align: center;
+        color: var(--text);
+      }
+
+      input[type="email"] {
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        width: 100%;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        transition: border-color 0.2s;
+      }
+
+      input[type="email"]:focus {
+        border-color: var(--primary);
+        outline: none;
+      }
+
+      button {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        padding: 0.75rem 1rem;
+        width: 100%;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #059669;
+      }
+
+      .note {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #6b7280;
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Masukkan Email Orang Tua</h2>
+      <input type="email" id="parentEmail" placeholder="contoh@email.com" />
+      <button id="saveBtn">Simpan</button>
+      <div class="note">
+        Email ini akan dipakai untuk mengirim peringatan otomatis.
+      </div>
+    </div>
+
+    <script src="email-setup.js"></script>
+  </body>
+</html>

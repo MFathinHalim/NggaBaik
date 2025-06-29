@@ -47,32 +47,62 @@ const checkUrl = async () => {
     if (!queryResponse) return;
 
     if (queryResponse.startsWith("[n]")) {
-      let message = queryResponse.replace("[n] ", "").replace("\n", "");
+      chrome.storage.local.get("parentEmail", ({ parentEmail }) => {
+        let message = queryResponse.replace("[n] ", "").replace("\n", "");
+        Swal.fire({
+          title: "Peringatan!",
+          text: message,
+          imageUrl:
+            "https://media.tenor.com/5ExGc8sRRAYAAAAj/mythikore-anime-girl.gif",
+          showCancelButton: true,
+          confirmButtonText: "Lanjut",
+          cancelButtonText: "Kembali ke Google",
+          didOpen: () => {
+            document.addEventListener("mousemove", () => {
+              speakFromPage(message);
+            });
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetch("https://api.emailjs.com/api/v1.0/email/send", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                service_id: "service_hhk9rbm",
+                template_id: "template_dbv49pl",
+                user_id: "8IZRuXPbGtWqznOeV",
+                template_params: {
+                  to_email: parentEmail,
+                  email: parentEmail,
+                  query: query,
+                  waktu: new Date().toLocaleString(),
+                },
+              }),
+            })
+              .then((res) => {
+                if (!res.ok) throw new Error("Gagal kirim email");
+                return res.text();
+              })
+              .then((text) => {
+                console.log("Email sukses terkirim:", text);
+              })
+              .catch((err) => {
+                console.error("Email GAGAL:", err);
+              });
 
-      Swal.fire({
-        title: "Peringatan!",
-        text: message,
-        imageUrl:
-          "https://media.tenor.com/5ExGc8sRRAYAAAAj/mythikore-anime-girl.gif",
-        showCancelButton: true,
-        confirmButtonText: "Lanjut",
-        cancelButtonText: "Kembali ke Google",
-        didOpen: () => {
-          document.addEventListener("mousemove", () => {
-            speakFromPage(message);
-          });
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = "https://www.youtube.com/watch?v=rQ9YQJ3JpWw";
-          chrome.runtime.sendMessage({
-            type: "logSearch",
-            query,
-            url: currentUrl,
-          });
-        } else {
-          window.location.href = "https://www.google.com";
-        }
+            chrome.runtime.sendMessage({
+              type: "logSearch",
+              query,
+              url: currentUrl,
+            });
+            window.location.href =
+              "https://www.youtube.com/watch?v=rQ9YQJ3JpWw";
+          } else {
+            window.location.href = "https://www.google.com";
+          }
+        });
       });
     } else if (queryResponse.startsWith("[a]")) {
       Swal.fire({
@@ -122,29 +152,59 @@ function monitorInputField(field) {
       const answer = response.answer?.replaceAll("\n", "").trim();
       console.log("Response:", response);
       if (answer === "[n]") {
-        warninginput = true;
+        chrome.storage.local.get("parentEmail", ({ parentEmail }) => {
+          warninginput = true;
 
-        Swal.fire({
-          title: "Peringatan!",
-          text: "JANGAN KETIK APA-APA YANG TIDAK PANTAS ATAU BERBAHAYA!",
-          imageUrl:
-            "https://media.tenor.com/5ExGc8sRRAYAAAAj/mythikore-anime.gif",
-          showCancelButton: true,
-          confirmButtonText: "Lanjut",
-          cancelButtonText: "Kembali ke Google",
-          didOpen: () => {
-            speakWithVoice("Peringatan! Jangan ketik hal yang tidak pantas.");
-          },
-        }).then((result) => {
-          if (result.isConfirmed) {
-            chrome.runtime.sendMessage({
-              type: "logSearch",
-              query: text,
-              url: window.location.hostname,
-            });
-          } else {
-            window.location.href = "https://www.google.com";
-          }
+          Swal.fire({
+            title: "Peringatan!",
+            text: "JANGAN KETIK APA-APA YANG TIDAK PANTAS ATAU BERBAHAYA!",
+            imageUrl:
+              "https://media.tenor.com/5ExGc8sRRAYAAAAj/mythikore-anime.gif",
+            showCancelButton: true,
+            confirmButtonText: "Lanjut",
+            cancelButtonText: "Kembali ke Google",
+            didOpen: () => {
+              speakWithVoice("Peringatan! Jangan ketik hal yang tidak pantas.");
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              chrome.runtime.sendMessage({
+                type: "logSearch",
+                query: text,
+                url: window.location.hostname,
+              });
+
+              fetch("https://api.emailjs.com/api/v1.0/email/send", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  service_id: "service_hhk9rbm",
+                  template_id: "template_dbv49pl",
+                  user_id: "8IZRuXPbGtWqznOeV",
+                  template_params: {
+                    to_email: parentEmail,
+                    email: parentEmail,
+                    query: `anak anda mencoba mengetik: ${text}`,
+                    waktu: new Date().toLocaleString(),
+                  },
+                }),
+              })
+                .then((res) => {
+                  if (!res.ok) throw new Error("Gagal kirim email");
+                  return res.text();
+                })
+                .then((text) => {
+                  console.log("Email sukses terkirim:", text);
+                })
+                .catch((err) => {
+                  console.error("Email GAGAL:", err);
+                });
+            } else {
+              window.location.href = "https://www.google.com";
+            }
+          });
         });
       }
     });
