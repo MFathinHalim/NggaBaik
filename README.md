@@ -12,7 +12,7 @@
 
 ## 📦 Instalasi Manual
 
-1. Clone repo ini atau download ZIP
+1. Clone repo ini atau download ZIP yang ada pada release
 2. Buka chrome://extensions/
 3. Aktifkan developer mode
 4. Klik load unpacked
