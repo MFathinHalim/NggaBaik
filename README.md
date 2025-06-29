@@ -65,7 +65,7 @@ Jika anak mengetikkan atau mengunjungi web berbahaya (seperti PHub atau Judi Onl
 ## 🙌 Kontribusi
 Pull request terbuka! Kalau kamu punya ide atau saran (fitur filter Youtube, blokir situs, log remote, ai yang lebih baik, dll), atau bahkan ingin membuat untuk aplikasi mobile silahkann.
 
-##📫 Kontak
+## 📫 Kontak
 Made with ❤️ by [M.Fathin Halim](https://mfathinhalim.github.io/)
 📧 halimfathin7@gmail.com
 📧 baikngga@gmail.com
