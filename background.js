@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "checkQuery") {
     (async () => {
       const openRouterKey =
-        "Bearer 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";
+        "Bearer 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";
       const prompt = `Bersikaplah seolah-olah kamu pengenal situs atau kueri. Jika aman untuk usia 13 tahun ke atas atau hanya sekedar nama orang, maka katakan '[y]',Jika berisiko hanya sebatas dengan orang asing atau apalah yang penting lebih besar resiko amannya ataupun hanya perbedaan konteks, maka katakan '[a], Jika tidak aman seperti judi ataupun konten yang sudah pasti butuh diatas 18 tahun, maka katakan '[n]'. Jangan lupa berikan apa hukuman dari orang tua (seperti hp disita dan lain-lain) dan alasannya dalam bahasa Indonesia dan secara super singkat.\nthis is the input: ${message.query}\nanswer?.`;
 
       try {
@@ -73,7 +73,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "checkInput") {
     (async () => {
       const openRouterKey =
-        "Bearer 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";
+        "Bearer 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";
 
       try {
         const response = await fetch(
